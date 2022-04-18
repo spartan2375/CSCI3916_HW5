@@ -15,7 +15,7 @@ class MovieDetail extends Component {
 
   render() {
     const DetailInfo = () => {
-      if (!this.props.selectedMovie) {
+      if (!this.props.selectedMovie[0]) {
         return <div>Loading....</div>;
       }
 
@@ -42,14 +42,15 @@ class MovieDetail extends Component {
             </ListGroupItem>
             <ListGroupItem>
               <h4>
-                <BsStarFill /> {this.props.selectedMovie[0].avgRating}
+                <BsStarFill />{" "}
+                {this.props.selectedMovie[0].avgRating.toFixed(1)}
               </h4>
             </ListGroupItem>
           </ListGroup>
           <Card.Body>
             {this.props.selectedMovie[0].reviews.map((review, i) => (
               <p key={i}>
-                <b>{review.name}</b>&nbsp; {review.comment}
+                <b>{getName(review)}</b>&nbsp; {review.comment}
                 &nbsp; <BsStarFill /> {review.rating}
               </p>
             ))}
@@ -67,5 +68,9 @@ const mapStateToProps = (state) => {
     selectedMovie: state.movie.selectedMovie,
   };
 };
+
+function getName(review) {
+  return review.name == null ? "Anonymous" : review.name;
+}
 
 export default connect(mapStateToProps)(MovieDetail);
